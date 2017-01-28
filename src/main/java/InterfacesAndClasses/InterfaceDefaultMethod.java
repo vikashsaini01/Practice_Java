@@ -5,7 +5,7 @@ public interface InterfaceDefaultMethod {
 	default String display(){
 		return this.toString();
 	}
-	
+	 
 	static String getInterfaceName(){
 		return "InterfaceDefaultMethod";
 	}
