@@ -107,6 +107,12 @@ public class Cow extends Animal implements Serializable {
 	}
 	
 	public static void main(String... s){
+		/*
+		 * Doesnt show not initialized error as comipler can trace that
+		 * 1==1 will always be executed and 1!=1 will never be executed.
+		 * 
+		 * in that way, another will always be initialized and count will never be accessed
+		 */
 		int count;
 		int another;
 		if(1==1)
