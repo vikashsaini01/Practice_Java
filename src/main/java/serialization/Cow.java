@@ -105,4 +105,14 @@ public class Cow extends Animal implements Serializable {
 		oos.writeObject(getGeoLocation());
 
 	}
+	
+	public static void main(String... s){
+		int count;
+		int another;
+		if(1==1)
+			another =5;
+		if(1!=1)
+			System.out.println(count++);
+		System.out.println(another++);
+	}
 }
