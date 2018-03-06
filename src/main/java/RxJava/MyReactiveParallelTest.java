@@ -1,5 +1,7 @@
 package RxJava;
 
+import java.util.concurrent.CountDownLatch;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
@@ -9,8 +11,8 @@ import io.reactivex.internal.schedulers.IoScheduler;
 
 public class MyReactiveParallelTest {
 
-	public static final double errorProbability = 1.0;
-
+	public static final double ERROR_PROBABILITY = 1.0;
+	CountDownLatch countDownLatch = new CountDownLatch(2);
 	public Observable<String> getObservableForPeople() {
 
 		Observable<String> ob = Observable.create(emitter -> {
@@ -20,7 +22,7 @@ public class MyReactiveParallelTest {
 
 			emitter.onNext(emitStringWithDelay("Rahul"));
 
-			if (Math.random() > errorProbability)
+			if (Math.random() > ERROR_PROBABILITY)
 				emitter.onError(new Exception("Error in emit"));
 			emitter.onNext(emitStringWithDelay("Kohli"));
 
@@ -46,7 +48,7 @@ public class MyReactiveParallelTest {
 
 			emitter.onNext(emitStringWithDelay("Orange"));
 
-			if (Math.random() > errorProbability)
+			if (Math.random() > ERROR_PROBABILITY)
 				emitter.onError(new Exception("Error in emit"));
 			emitter.onNext(emitStringWithDelay("pink"));
 
@@ -66,13 +68,16 @@ public class MyReactiveParallelTest {
 
 			emitter.onNext(emitStringWithDelay("Thursday"));
 
-			if (Math.random() > errorProbability)
+			if (Math.random() > ERROR_PROBABILITY)
 				emitter.onError(new Exception("Error in emit"));
 			emitter.onNext(emitStringWithDelay("Friday"));
 
 			emitter.onNext(emitStringWithDelay("Saturday"));
 			emitter.onNext(emitStringWithDelay("Sunday"));
 			emitter.onComplete();
+			
+			
+			
 		});
 
 		return ob;
@@ -84,6 +89,7 @@ public class MyReactiveParallelTest {
 			@Override
 			public void onComplete() {
 				System.out.println("Emit completed ");
+				countDownLatch.countDown();
 
 			}
 
@@ -113,6 +119,7 @@ public class MyReactiveParallelTest {
 	}
 
 	public static void main(String[] str) throws InterruptedException {
+		
 		MyReactiveParallelTest myReactiveTest = new MyReactiveParallelTest();
 
 		Observable<String> obPeople = myReactiveTest.getObservableForPeople().subscribeOn(getScheduler());
@@ -130,11 +137,12 @@ public class MyReactiveParallelTest {
 
 		outputObservable = outputObservable.subscribeOn(getScheduler());
 
-		//outputObservable.subscribe(myReactiveTest.getObserver());
-		outputObservable.blockingSubscribe(myReactiveTest.getObserver());
+		outputObservable.subscribe(myReactiveTest.getObserver());
+		//outputObservable.blockingSubscribe(myReactiveTest.getObserver());
 
-		Thread.sleep(10700);
-		System.out.println("10.7 seconds over");
+
+		myReactiveTest.countDownLatch.countDown();
+		myReactiveTest.countDownLatch.await();
 
 	}
 }
