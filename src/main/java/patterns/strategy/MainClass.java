@@ -20,7 +20,7 @@ public class MainClass {
 		Duck germanDuck = new GermanDuck();
 		germanDuck.setFlyingBheavior(new FlyWithEngine());
 		germanDuck.doMoves();
-		
+		 
 		
 		Duck aussieDuck = new AussieDuck(new NoFlyingButJumpingHigh());	
 		aussieDuck.doMoves();
