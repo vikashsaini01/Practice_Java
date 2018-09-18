@@ -32,9 +32,9 @@ public class CompletableFutureTest2 {
         CompletableFuture<ToDo> future = CompletableFuture.supplyAsync(new Supplier<ToDo>() {
             @Override
             public ToDo get() {
-                final ToDo toDo = restApiClient.getToDo(id);
+                //final ToDo toDo = restApiClient.getToDo(id);
 
-                return toDo;
+                return new ToDo();
             }
         });
 
