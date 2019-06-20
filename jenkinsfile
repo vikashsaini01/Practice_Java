@@ -2,6 +2,10 @@ pipeline {
     agent any
 
     stages {
+        stage('init'){
+             echo "PATH = ${PATH}"
+             echo "M2_HOME = ${M2_HOME}"
+        }
      	stage('checkout') {
             steps {
                  checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/vikashsaini01/Practice_Java.git']]])
