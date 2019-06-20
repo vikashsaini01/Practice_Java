@@ -5,10 +5,12 @@ pipeline {
      	stage('checkout') {
             steps {
                  checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/vikashsaini01/Practice_Java.git']]])
+                  echo 'checkedout..'
             }
         }
         stage('build') {
             steps {
+                sh "${mavenName}/bin/mvn clean package"
                 echo 'Building..'
             }
         }
